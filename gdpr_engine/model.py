@@ -1,11 +1,12 @@
 ﻿from __future__ import annotations
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from typing import Optional
 
 
 class Policy(BaseModel):
     """Placeholder for ODRL/GDPR policy model."""
     uid: str
+    permission: list[Permission] = []
 
 class Action(BaseModel):
     name: str

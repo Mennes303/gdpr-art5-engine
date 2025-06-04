@@ -1,0 +1,9 @@
+{
+  "uid": "urn:policy:demo:1",
+  "permission": [
+    {
+      "action": {"name": "use"},
+      "target": {"uid": "urn:data:customers"}
+    }
+  ]
+}
