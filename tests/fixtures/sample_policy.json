@@ -3,7 +3,12 @@
   "permission": [
     {
       "action": {"name": "use"},
-      "target": {"uid": "urn:data:customers"}
+      "target": {"uid": "urn:data:customers"},
+      "constraint": {
+        "left_operand": "purpose",
+        "operator": "eq",
+        "right_operand": "service-improvement"
+      }
     }
   ]
 }
