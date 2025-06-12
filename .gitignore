@@ -1,0 +1,12 @@
+﻿# build artifacts
+dist/
+
+# local env-file
+.env
+
+# Python byte-code caches
+__pycache__/
+
+# runtime data written by the PDP
+audit.jsonl
+duties.sqlite3
