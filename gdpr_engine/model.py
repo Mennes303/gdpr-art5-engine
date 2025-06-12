@@ -123,6 +123,7 @@ class Constraint(BaseModel):
 
 class Duty(BaseModel):
     action: Action
+    after: Optional[int] = None
     constraint: Optional[Constraint] = None
 
 
