@@ -10,3 +10,4 @@ __pycache__/
 # runtime data written by the PDP
 audit.jsonl
 duties.sqlite3
+policies.sqlite3
