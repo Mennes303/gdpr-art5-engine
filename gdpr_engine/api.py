@@ -54,6 +54,7 @@ class DecisionRequest(BaseModel):
     target: str
     purpose: str | None = None
     role: str | None = None        # enables role-based constraints
+    location: str | None = None
 
 
 class DecisionResponse(BaseModel):
@@ -81,5 +82,6 @@ def decide(req: DecisionRequest) -> DecisionResponse:
         target=req.target,
         purpose=req.purpose,
         role=req.role,
+        location=req.location,
     )
     return DecisionResponse(decision=evaluate(policy, ctx))
