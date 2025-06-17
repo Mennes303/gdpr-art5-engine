@@ -12,7 +12,9 @@ Accountability check for the GDPR-Article-5 PDP.
 
 from __future__ import annotations
 
-import csv, json, tempfile
+import csv
+import json
+import tempfile
 from pathlib import Path
 
 from gdpr_engine.audit_log import _LOG as _AUDIT_LOG_PATH  # original path

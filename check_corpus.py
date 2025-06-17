@@ -17,8 +17,9 @@ from __future__ import annotations
 import csv
 from pathlib import Path
 from collections import Counter
+from typing import Tuple
 
-from gdpr_engine.evaluator import evaluate, RequestCtx, Decision
+from gdpr_engine.evaluator import evaluate, RequestCtx
 from gdpr_engine.loader import load_policy
 
 # ── locate the corpus (same file used in the public tests) ───────────
@@ -27,7 +28,7 @@ CORPUS = Path("tests") / "corpus.csv"        # adjust if you moved it
 # ── bookkeeping ───────────────────────────────────────────────────────
 total   = 0
 matches = 0
-conf    = Counter()      # keys: (expected, got)
+conf: Counter[Tuple[str, str]] = Counter()      # keys: (expected, got)
 
 mismatches: list[str] = []
 
@@ -70,7 +71,7 @@ fp = conf[("Deny",   "Permit")]
 fn = conf[("Permit", "Deny")]
 
 print("\nConfusion matrix (rows = expected, cols = got)")
-print(f"            Permit   Deny")
+print("            Permit   Deny")
 print(f"Permit   |  {tp:5d}   {fn:5d}")
 print(f"Deny     |  {fp:5d}   {tn:5d}\n")
 
