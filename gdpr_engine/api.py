@@ -111,7 +111,7 @@ def get_policy(pid: int) -> PolicyOut:
 @app.put("/policies/{pid}", status_code=204)
 def update_policy(pid: int, p: PolicyIn):
     try:
-        policy_store.update(pid, json.dumps(p.body), uid=p.uid)
+        policy_store.update(pid, json.dumps(p.body))
     except KeyError:
         raise HTTPException(status_code=404, detail="policy not found")
 

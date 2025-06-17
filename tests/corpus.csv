@@ -1,0 +1,61 @@
+policy_id,action,target,purpose,role,location,expected_decision
+# ----- POLICY 1  ----------------------------------------------------------
+1,use,urn:data:customers,service-improvement,data-analyst,NL,Permit
+1,use,urn:data:customers,service-improvement,data-analyst,DE,Permit
+1,use,urn:data:customers,fraud-detection,data-analyst,FR,Permit
+1,use,urn:data:customers,service-improvement,data-analyst,SE,Permit
+1,use,urn:data:customers,service-improvement,data-analyst,PT,Permit
+1,use,urn:data:customers,service-improvement,data-analyst,US,Deny
+1,use,urn:data:customers,marketing,data-analyst,NL,Deny
+1,use,urn:data:customers,service-improvement,intern,NL,Deny
+1,use,urn:data:customers,service-improvement,data-analyst,BR,Deny
+1,use,urn:data:customers,marketing,intern,US,Deny
+1,use,urn:data:customers,,data-analyst,NL,Deny
+1,use,urn:data:customers,service-improvement,,NL,Deny
+1,use,urn:data:customers,service-improvement,data-analyst,,Deny
+1,use,urn:data:customers,,intern,,Deny
+1,use,urn:data:customers,fraud-detection,data-analyst,US,Deny
+1,use,urn:data:customers,fraud-detection,intern,DE,Deny
+1,use,urn:data:customers,service-improvement,data-analyst,CH,Deny
+1,use,urn:data:customers,service-improvement,data-analyst,AT,Permit
+1,use,urn:data:customers,fraud-detection,data-analyst,LV,Permit
+1,use,urn:data:customers,service-improvement,data-analyst,ES,Permit
+1,use,urn:data:customers,fraud-detection,data-analyst,IT,Permit
+1,use,urn:data:customers,service-improvement,data-analyst,PL,Permit
+1,use,urn:data:customers,service-improvement,data-analyst,CZ,Permit
+1,use,urn:data:customers,fraud-detection,data-analyst,GR,Permit
+1,use,urn:data:customers,fraud-detection,data-analyst,,Deny
+1,use,urn:data:customers,service-improvement,,,Deny
+1,use,urn:data:x,service-improvement,data-analyst,NL,Deny        # wrong asset
+1,delete,urn:data:customers,service-improvement,data-analyst,NL,Deny  # wrong action
+1,use,urn:data:customers,service-improvement,data-analyst,HU,Permit
+# ----- POLICY 2  ----------------------------------------------------------
+2,distribute,urn:data:orders,fraud-detection,supervisor,US,Permit
+2,distribute,urn:data:orders,fraud-detection,supervisor,CA,Permit
+2,distribute,urn:data:orders,fraud-detection,supervisor,MX,Permit
+2,distribute,urn:data:orders,fraud-detection,supervisor,NL,Deny   # out of region
+2,distribute,urn:data:orders,fraud-detection,data-analyst,US,Deny
+2,distribute,urn:data:orders,marketing,supervisor,US,Deny
+2,distribute,urn:data:orders,fraud-detection,supervisor,BR,Permit
+2,distribute,urn:data:orders,fraud-detection,intern,US,Deny
+2,distribute,urn:data:orders,,supervisor,US,Deny
+2,distribute,urn:data:orders,fraud-detection,,US,Deny
+2,distribute,urn:data:orders,fraud-detection,supervisor,,Deny
+2,distribute,urn:data:orders,marketing,intern,NL,Deny
+2,distribute,urn:data:orders,fraud-detection,data-analyst,FR,Deny
+2,distribute,urn:data:orders,fraud-detection,data-analyst,US,Deny
+2,distribute,urn:data:orders,fraud-detection,supervisor,ES,Deny
+2,distribute,urn:data:orders,marketing,supervisor,CA,Deny
+2,distribute,urn:data:orders,marketing,intern,US,Deny
+2,distribute,urn:data:orders,fraud-detection,data-analyst,BR,Deny
+2,distribute,urn:data:orders,,intern,,Deny
+2,distribute,urn:data:x,fraud-detection,supervisor,US,Deny        # wrong asset
+2,use,urn:data:orders,fraud-detection,supervisor,US,Deny          # wrong action
+2,distribute,urn:data:orders,fraud-detection,supervisor,CL,Permit
+2,distribute,urn:data:orders,fraud-detection,supervisor,AR,Permit
+2,distribute,urn:data:orders,fraud-detection,supervisor,CO,Permit
+2,distribute,urn:data:orders,fraud-detection,supervisor,PE,Permit
+2,distribute,urn:data:orders,fraud-detection,supervisor,DO,Permit
+2,distribute,urn:data:orders,fraud-detection,supervisor,CR,Permit
+2,distribute,urn:data:orders,fraud-detection,supervisor,EC,Permit
+2,distribute,urn:data:orders,fraud-detection,supervisor,VE,Permit

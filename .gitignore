@@ -1,13 +1,43 @@
 ﻿# build artifacts
 dist/
+build/
+*.egg-info/
 
-# local env-file
-.env
+# local env / secrets
+
+.env            # dotenv
+*.env           # any other env-files
+
+
+# Python virtual-environments
+
+.venv/
+venv/
+env/
 
 # Python byte-code caches
+
 __pycache__/
+*.py[cod]
+
 
 # runtime data written by the PDP
+
 audit.jsonl
 duties.sqlite3
 policies.sqlite3
+
+
+# one-off tools & benchmark artefacts
+
+hey.exe
+payload.json
+
+# IDE / editor folders
+
+.vscode/
+.idea/
+
+# helper / scratch scripts
+scripts/
+tests/_clean_corpus.py

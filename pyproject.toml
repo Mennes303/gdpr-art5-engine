@@ -1,0 +1,28 @@
+[project]
+name = "gdpr-engine"
+version = "0.0.1"
+description = "Minimal GDPR Article-5 policy evaluator"
+authors = [{name = "Menze de Hoop"}]
+requires-python = ">=3.11"
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "mypy",
+    "pytest",
+    "pydantic",
+    "pydantic-settings",
+    "python-dotenv",
+    "fastapi",
+    "uvicorn[standard]",
+    "httpx",
+    "python-dateutil",
+]
+
+[project.scripts]
+gdprctl = "gdpr_engine.cli:app"
+
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

@@ -15,7 +15,7 @@ def test_crud_roundtrip(tmp_path, monkeypatch):
     assert body["uid"] == SAMPLE["uid"]
 
     body["uid"] = "urn:test:updated"
-    policy_store.update(pid, json.dumps(body), uid=body["uid"])
+    policy_store.update(pid, json.dumps(body))
 
     body2 = json.loads(policy_store.read(pid))
     assert body2["uid"] == "urn:test:updated"

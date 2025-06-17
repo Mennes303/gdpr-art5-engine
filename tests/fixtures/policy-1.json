@@ -1,0 +1,16 @@
+{
+  "uid": "urn:policy:1",
+  "permission": [
+    {
+      "action": { "name": "use" },
+      "target": { "uid": "urn:data:customers" },
+      "constraint": {
+        "left_operand": "location",
+        "operator": "in",
+        "right_operand": [
+          "NL","DE","FR","SE","PT","AT","LV","ES","IT","PL","CZ","GR","HU"
+        ]
+      }
+    }
+  ]
+}
