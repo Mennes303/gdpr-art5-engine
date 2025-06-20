@@ -7,21 +7,46 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # ── fetch repo ──────────────────────────────────────────────────────
     - name: Check out source
       uses: actions/checkout@v4
 
+    # ── Python toolchain ────────────────────────────────────────────────
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11'
+        python-version: "3.11"
 
-    - name: Install project (runtime deps)
+    # ── install runtime + dev dependencies (pytest, ruff, locust, …) ───
+    - name: Install project (runtime + dev deps)
       run: |
+        pip install --upgrade pip
         pip install build
-        pip install .
+        pip install .[dev]
 
-    - name: Install dev tools
-      run: pip install pytest
-
+    # ── run unit tests ──────────────────────────────────────────────────
     - name: Run test-suite
-      run: pytest
+      run: pytest -q
+
+    # ── start API server in the background ──────────────────────────────
+    - name: Start API server
+      run: |
+        uvicorn gdpr_engine.api:app --port 8000 --log-level warning &
+        echo $! > uvicorn.pid
+        # give the server a second to bind
+        sleep 2
+
+    # ── quick Locust smoke-test (10 VU, 10 s) ───────────────────────────
+    - name: Run Locust smoke-test
+      run: |
+        locust -f locustfile.py \
+               --headless \
+               -u 10 -r 10 \
+               -t 10s \
+               --host http://localhost:8000
+
+    # ── always stop the background server ───────────────────────────────
+    - name: Stop API server
+      if: always()
+      run: |
+        kill "$(cat uvicorn.pid)"

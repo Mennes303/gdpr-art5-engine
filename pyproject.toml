@@ -23,6 +23,8 @@ dev = [
   "pytest",
   "ruff",
   "mypy",
+  "locust>=2.23",
+  "pytest>=8.4",
 ]
 
 # CLI entry-point
