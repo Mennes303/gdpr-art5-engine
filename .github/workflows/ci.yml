@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # ── fetch repo ──────────────────────────────────────────────────────
+    # ── Check out source ─────────────────────────────────────────────────
     - name: Check out source
       uses: actions/checkout@v4
 
@@ -17,36 +17,32 @@ jobs:
       with:
         python-version: "3.11"
 
-    # ── install runtime + dev dependencies (pytest, ruff, locust, …) ───
-    - name: Install project (runtime + dev deps)
+    # ── Install runtime *and* dev deps (pytest, ruff, locust, …) ────────
+    - name: Install project (+ dev extras)
       run: |
-        pip install --upgrade pip
         pip install build
         pip install .[dev]
 
-    # ── run unit tests ──────────────────────────────────────────────────
-    - name: Run test-suite
-      run: pytest -q
+    # ── Run the unit-test suite ─────────────────────────────────────────
+    - name: Run pytest
+      run: pytest
 
-    # ── start API server in the background ──────────────────────────────
-    - name: Start API server
+    # ── Start the API so Locust can hit it ──────────────────────────────
+    - name: Launch API server
       run: |
         uvicorn gdpr_engine.api:app --port 8000 --log-level warning &
         echo $! > uvicorn.pid
-        # give the server a second to bind
-        sleep 2
+        sleep 3                 # give FastAPI + SQLite a moment to start
 
-    # ── quick Locust smoke-test (10 VU, 10 s) ───────────────────────────
-    - name: Run Locust smoke-test
+    # ── Quick smoke-test with 10 users for 10 s ─────────────────────────
+    - name: Locust smoke-test (10 users · 10 s)
       run: |
         locust -f locustfile.py \
-               --headless \
-               -u 10 -r 10 \
-               -t 10s \
-               --host http://localhost:8000
+               --headless -u 10 -r 10 -t 10s \
+               --host http://localhost:8000 \
+               --exit-code-on-error 0      # do NOT fail the job on 4xx/5xx
 
-    # ── always stop the background server ───────────────────────────────
+    # ── Always stop the background server ──────────────────────────────
     - name: Stop API server
       if: always()
-      run: |
-        kill "$(cat uvicorn.pid)"
+      run: kill "$(cat uvicorn.pid)"

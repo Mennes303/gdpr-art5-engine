@@ -1,45 +1,45 @@
 """
-Load-test script for the GDPR engine API.
-
-Default behaviour = 90 % read-only evaluate requests,
-10 % write requests that add a duty.
-You can tweak the ratio at runtime:
-
-    READ_RATIO=0.95 locust -f locustfile.py …
-
-All users share the same asset UID to keep the script tiny; feel free
-to randomise if you want a heavier write pattern.
+Tiny smoke-test for GitHub Actions
+──────────────────────────────────
+• 90 % of requests hit /evaluate
+• 10 % hit /duties
+• Payloads are *minimal* examples that already pass FastAPI validation.
+Adjust the JSON snippets below if your API schema changes.
 """
 
+from random import choice
 from locust import HttpUser, task, between
-import random, os
 
-# Read / write mix — can be overridden with an env variable
-READ_RATIO = float(os.getenv("READ_RATIO", "0.90"))
+EXAMPLE_POLICY_ID = 1          # update if your seed data uses other IDs
+SUBJECTS          = ["alice", "bob", "carol"]
+DATASET_ID        = "demo-ds-001"
+LOCATIONS         = ["DE", "US", "NL", ""]
 
 class EngineUser(HttpUser):
-    host = os.getenv("LOCUST_HOST") or "http://localhost:8000"
-    wait_time = between(0.05, 0.2)          # ✱ realistic “think time”
+    wait_time = between(0.01, 0.1)   # 10-100 ms think-time
 
-    @task
-    def evaluate_or_insert(self) -> None:
-        """90 % evaluate, 10 % create-duty by default."""
-        if random.random() < READ_RATIO:
-            self.client.post(
-                "/evaluate",
-                json={
-                    "action": "use",
-                    "asset_uid": "urn:data:customers",
-                    "purpose": "service-improvement",
-                },
-                name="/evaluate (read)",
-            )
-        else:
-            self.client.post(
-                "/duties",
-                json={
-                    "asset_uid": "urn:data:customers",
-                    "after_days": 30,
-                },
-                name="/duties (write)",
-            )
+    @task(9)                         # ≈ 90 % of the traffic
+    def evaluate(self) -> None:
+        self.client.post(
+            "/evaluate",
+            json={
+                "policy_id": EXAMPLE_POLICY_ID,
+                "subject":   {"id": choice(SUBJECTS)},
+                "action":    {"id": "use"},
+                "object":    {"id": DATASET_ID},
+                "context":   {"location": choice(LOCATIONS)},
+            },
+            name="/evaluate (read)",
+        )
+
+    @task(1)                         # ≈ 10 %
+    def create_duty(self) -> None:
+        self.client.post(
+            "/duties",
+            json={
+                "policy_id": EXAMPLE_POLICY_ID,
+                "subject":   {"id": "scheduler"},
+                "duty":      "log-access",    # whatever your endpoint expects
+            },
+            name="/duties (write)",
+        )

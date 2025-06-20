@@ -20,11 +20,10 @@ dependencies = [
 # ───────────── Dev / test / lint extras ─────────────
 [project.optional-dependencies]
 dev = [
-  "pytest",
+  "pytest>=8.4",
   "ruff",
   "mypy",
-  "locust>=2.23",
-  "pytest>=8.4",
+  "locust>=2.37",
 ]
 
 # CLI entry-point
