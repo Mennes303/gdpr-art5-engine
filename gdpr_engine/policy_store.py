@@ -57,6 +57,7 @@ def _conn() -> sqlite3.Connection:
                 "VALUES (?, ?, ?, ?)",
                 (uid, raw, now, now),
             )
+        conn.commit()
 
     return conn
 
