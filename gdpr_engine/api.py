@@ -8,6 +8,7 @@ GET    /policies/{id}      → fetch
 PUT    /policies/{id}      → replace
 DELETE /policies/{id}      → delete
 POST   /decision           → Permit / Deny using policy_id *or* policy_file
+POST   /duties/flush       → (test-only) run duty scheduler immediately
 """
 
 from __future__ import annotations
@@ -26,7 +27,7 @@ from gdpr_engine.loader import load_policy
 from gdpr_engine import policy_store
 
 # ---------------------------------------------------------------------------#
-# Lifespan: hourly duty-scheduler                                             #
+# Lifespan: hourly duty-scheduler                                            #
 # ---------------------------------------------------------------------------#
 
 
@@ -52,7 +53,7 @@ app = FastAPI(title="GDPR Article-5 PDP", lifespan=lifespan)
 
 # ---------------------------------------------------------------------------#
 # Policy CRUD models                                                          #
-# ---------------------------------------------------------------------------#
+# ---------------------------------------------------------------------------
 
 
 class PolicyIn(BaseModel):
@@ -68,7 +69,7 @@ class PolicyOut(BaseModel):
 
 # ---------------------------------------------------------------------------#
 # Decision models                                                             #
-# ---------------------------------------------------------------------------#
+# ---------------------------------------------------------------------------
 
 
 class DecisionRequest(BaseModel):
@@ -131,7 +132,7 @@ def delete_policy(pid: int):
 
 @app.post("/decision", response_model=DecisionResponse)
 def decide(req: DecisionRequest) -> DecisionResponse:
-    """Evaluate a request by policy **ID** _or_ policy file."""
+    """Evaluate a request by policy **ID** *or* policy file."""
     # --- load policy -----------------------------------------------------
     if req.policy_id is not None:
         try:
@@ -158,3 +159,20 @@ def decide(req: DecisionRequest) -> DecisionResponse:
         location=req.location,
     )
     return DecisionResponse(decision=evaluate(policy, ctx))
+
+
+# ---------------------------------------------------------------------------#
+# /duties/flush – helper for load testing                                     #
+# ---------------------------------------------------------------------------#
+
+
+@app.post("/duties/flush", status_code=202)
+def flush_duties():
+    """
+    Force-execute the duty scheduler.
+
+    Locust calls this once during the “dutyflush” scenario so we can measure
+    how much foreground latency spikes when duties are processed.
+    """
+    duty_tick()
+    return {"status": "flushed"}

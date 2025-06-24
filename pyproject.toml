@@ -5,7 +5,7 @@ description     = "Minimal GDPR Article-5 policy evaluator"
 authors         = [{ name = "Menze de Hoop" }]
 requires-python = ">=3.11"
 
-# ───────────── Runtime requirements ─────────────
+# Runtime requirements
 dependencies = [
   "fastapi",
   "uvicorn[standard]",
@@ -14,10 +14,10 @@ dependencies = [
   "python-dateutil",
   "python-dotenv",
   "httpx",
-  "typer",                  # ← NEW
+  "typer",                  
 ]
 
-# ───────────── Dev / test / lint extras ─────────────
+# Dev / test / lint extras
 [project.optional-dependencies]
 dev = [
   "pytest>=8.4",
