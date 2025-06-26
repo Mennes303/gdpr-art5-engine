@@ -1,18 +1,21 @@
+"""
+CLI integration test: ensure ``gdprctl`` exits with status 0 and prints
+``Permit`` when the request satisfies the sample policy.
+"""
+
 import subprocess
 import sys
+
 POLICY = "tests/fixtures/sample_policy.json"
 
 
 def test_cli_permit():
-    """
-    gdprctl should exit 0 and print 'Permit'
-    when the request matches the policy constraints.
-    """
+    """Expect `Permit` and exit code 0 for a matching request."""
     cmd = [
         sys.executable,
         "-m",
         "gdpr_engine.cli",
-        POLICY,                       # ← no "eval" sub-command
+        POLICY,  # path to policy file (top‑level positional argument)
         "use",
         "urn:data:customers",
         "--purpose",

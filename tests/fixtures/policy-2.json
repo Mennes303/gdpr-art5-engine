@@ -1,16 +1,20 @@
+
 {
   "uid": "urn:policy:2",
-  "permission": [
-    {
-      "action": { "name": "distribute" },
-      "target": { "uid": "urn:data:customers" },
-      "constraint": {
-        "left_operand": "location",
-        "operator": "in",
-        "right_operand": [
-          "US","CA","MX","BR","AR","CL","CO","PE","DO","CR","VE","EC"
-        ]
-      }
+  "permission": [{
+    "action": { "name": "distribute" },
+    "target": { "uid": "urn:data:orders" },
+    "constraint": [
+      { "left_operand": "role",
+        "operator":     "==",
+        "right_operand": "supervisor" },
+      { "left_operand": "location",
+        "operator":     "in",
+        "right_operand": ["US","CA","MX","BR","AR","CL","CO","PE","DO","CR","VE","EC"] }
+    ],
+    "duty": {
+      "action": { "name": "delete" },
+      "after":  30
     }
-  ]
+  }]
 }

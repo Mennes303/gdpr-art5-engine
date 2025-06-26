@@ -1,5 +1,4 @@
 policy_id,action,target,purpose,role,location,expected_decision
-# ----- POLICY 1  ----------------------------------------------------------
 1,use,urn:data:customers,service-improvement,data-analyst,NL,Permit
 1,use,urn:data:customers,service-improvement,data-analyst,DE,Permit
 1,use,urn:data:customers,fraud-detection,data-analyst,FR,Permit
@@ -29,7 +28,6 @@ policy_id,action,target,purpose,role,location,expected_decision
 1,use,urn:data:x,service-improvement,data-analyst,NL,Deny        # wrong asset
 1,delete,urn:data:customers,service-improvement,data-analyst,NL,Deny  # wrong action
 1,use,urn:data:customers,service-improvement,data-analyst,HU,Permit
-# ----- POLICY 2  ----------------------------------------------------------
 2,distribute,urn:data:orders,fraud-detection,supervisor,US,Permit
 2,distribute,urn:data:orders,fraud-detection,supervisor,CA,Permit
 2,distribute,urn:data:orders,fraud-detection,supervisor,MX,Permit

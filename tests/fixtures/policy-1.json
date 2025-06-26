@@ -1,16 +1,18 @@
 {
   "uid": "urn:policy:1",
-  "permission": [
-    {
-      "action": { "name": "use" },
-      "target": { "uid": "urn:data:customers" },
-      "constraint": {
-        "left_operand": "location",
-        "operator": "in",
-        "right_operand": [
-          "NL","DE","FR","SE","PT","AT","LV","ES","IT","PL","CZ","GR","HU"
-        ]
-      }
-    }
-  ]
+  "permission": [{
+    "action":   { "name": "use" },
+    "target":   { "uid": "urn:data:customers" },
+    "constraint": [
+      { "left_operand": "purpose",
+        "operator":     "in",
+        "right_operand": ["service-improvement", "fraud-detection"] },
+      { "left_operand": "role",
+        "operator":     "==",
+        "right_operand": "data-analyst" },
+      { "left_operand": "location",
+        "operator":     "in",
+        "right_operand": ["NL","DE","FR","SE","PT","AT","LV","ES","IT","PL","CZ","GR","HU"] }
+    ]
+  }]
 }

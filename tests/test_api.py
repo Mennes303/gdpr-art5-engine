@@ -1,3 +1,10 @@
+"""
+Unit test: happy‑path check for the ``/decision`` endpoint.
+
+Sends a request that satisfies the sample policy (purpose ``service‑improvement``)
+and asserts that the response body contains ``{"decision": "Permit"}``.
+"""
+
 from fastapi.testclient import TestClient
 from gdpr_engine.api import app
 
@@ -6,7 +13,7 @@ POLICY = "tests/fixtures/sample_policy.json"
 
 
 def test_decision_endpoint_permit():
-    """Endpoint should return Permit for a matching purpose."""
+    """Expect **Permit** when the purpose matches the policy."""
     resp = client.post(
         "/decision",
         json={

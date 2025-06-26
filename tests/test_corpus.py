@@ -1,3 +1,10 @@
+"""
+Parameterized test that replays every row in *corpus.csv* through the evaluator.
+
+Each CSV row contains the input request plus the expected decision. Rows that
+start with ``#`` in the *policy_id* column are treated as comments and skipped.
+"""
+
 import csv
 import pathlib
 import pytest
@@ -7,14 +14,12 @@ from gdpr_engine.loader import load_policy
 
 CORPUS = pathlib.Path(__file__).parent / "corpus.csv"
 
-@pytest.mark.parametrize(
-    "row",
-    csv.DictReader(CORPUS.open(), skipinitialspace=True),
-)
+
+@pytest.mark.parametrize("row", csv.DictReader(CORPUS.open(), skipinitialspace=True))
 def test_corpus_row(row):
-    # skip comment lines that start with '#'
+    """Assert that *evaluate* returns the decision specified in each CSV row."""
     if row["policy_id"].startswith("#"):
-        return
+        return  # skip commented rows
 
     policy = load_policy(int(row["policy_id"]))
     ctx = RequestCtx(
